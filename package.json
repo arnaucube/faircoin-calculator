@@ -1,0 +1,11 @@
+{
+  "name": "faircoin-calculator",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "prestart": "npm install",
+    "start": "http-server"
+  },
+  "dependencies": {
+  }
+}

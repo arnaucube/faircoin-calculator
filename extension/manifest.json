@@ -1,0 +1,19 @@
+{
+  "manifest_version": 2,
+  "name": "FairCoin Calculator",
+  "version": "1.0",
+  "permissions": [
+    "webRequest",
+    "<all_urls>",
+    "*://api.fairplayground.info/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [ "https://chain.fair.to/address*" ],
+      "js": [ "jquery-3.3.1.min.js", "extension.js" ]
+    }
+  ],
+  "gecko": {
+    "id": "faircoin-calculator@mayel.space"
+  }
+}

@@ -1,3 +1,7 @@
+var total_fair;
+var total_euro;
+var total_market;
+
 $(function() {
 
     ajax({
@@ -19,18 +23,26 @@ $(function() {
         	var heads = '<th>Official Rate</th><th>Official Value</th><th>Market Value</th>';
     		$("thead tr").append(heads);
 
-            $('tbody  > tr').each(function() {
+            $('tbody').each(function() {
+
+            	total_fair = total_euro = total_market = 0;
+
+				$(this).find('tr').each(function() {
 
 
-                var dateVar = $(this).find('td:first').text();
-                var d = new Date(dateVar);
-                var dateISO = d.toISOString().slice(0, 10);
+					var dateVar = $(this).find('td:first').text();
+					var d = new Date(dateVar);
+					var dateISO = d.toISOString().slice(0, 10);
 
-                var faircoins = $(this).find('td:nth-child(3)').text();
+					var faircoins = parseFloat($(this).find('td:nth-child(3)').text());
 
-                // 		$(this).append('<td>'+faircoins+'</td>');
+					// 		$(this).append('<td>'+faircoins+'</td>');
 
-                calculateEuros(dateISO, faircoins, this);
+					calculateEuros(dateISO, faircoins, this);
+
+				});
+
+				 $(this).append('<tr><td><strong>Totals</strong></td><td></td><td>' + (Math.round(total_fair * 100) / 100) + ' FAIR</td><td></td><td>€ ' + (Math.round(total_euro * 100) / 100) + '</td><td>€ ' + (Math.round(total_market * 100) / 100) + '</td></tr>');
 
             });
         }
@@ -64,6 +76,9 @@ $(function() {
         var euros = faircoins * selectedPriceData[3];
         var market = faircoins * selectedPriceData[2];
 
+        total_fair = total_fair+faircoins;
+        total_euro = total_euro+euros;
+        total_market = total_market+market;
 
         $(el).append('<td>' + parseFloat(selectedPriceData[3]).toString() + '</td>');
         $(el).append('<td>€ ' + (Math.round(euros * 100) / 100) + '</td>');

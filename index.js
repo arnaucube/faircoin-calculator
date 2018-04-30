@@ -67,7 +67,7 @@ function calculateEuros() {
   var euros = faircoins * selectedPriceData[3];
   document.getElementById("inputEuro").value= euros;
   document.getElementById("result").innerHTML = "The official rate was " + parseFloat(selectedPriceData[3]).toString() + " <p>" + faircoins + " FAIR were worth " + euros + " €";
-  toastr.success(faircoins + " FC, were " + euros + " €");
+  toastr.success(faircoins + " FAIR were " + euros + " €");
 }
 
 function calculateFaircoins() {
@@ -97,6 +97,6 @@ function calculateFaircoins() {
 
   var faircoins = euros / selectedPriceData[3];
   document.getElementById("inputFaircoin").value= faircoins;
-  document.getElementById("result").innerHTML = "The official rate was " + parseFloat(selectedPriceData[3]).toString() + " <p>" + euros + " € were worth " + faircoins + " FC";
-  toastr.success(euros +  "€, are " + faircoins + " FC");
+  document.getElementById("result").innerHTML = "The official rate was " + parseFloat(selectedPriceData[3]).toString() + " <p>" + euros + " € were worth " + faircoins + " FAIR";
+  toastr.success(euros +  "€ were " + faircoins + " FAIR");
 }

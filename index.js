@@ -9,7 +9,7 @@ $(document).ready(function() {
 
     $.ajax({
         type: "GET",
-        url: "http://api.fairplayground.info/rawdata/faircoin_prices.csv",
+        url: "https://api.fairplayground.info/rawdata/faircoin_prices.csv",
         dataType: "text",
         success: processData
      });

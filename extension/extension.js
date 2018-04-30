@@ -1,25 +1,8 @@
 $(function() {
 
-    var heads = '<th>Official Rate</th><th>Official Value</th><th>Market Value</th>';
-
-    $("thead tr").append(heads);
-
-
-    ajax = function(options, callback) {
-        var xhr;
-        xhr = new XMLHttpRequest();
-        xhr.open(options.type, options.url, options.async || true);
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === 4) {
-                return callback(xhr.responseText);
-            }
-        };
-        return xhr.send();
-    };
-
     ajax({
         type: "GET",
-        url: "http://api.fairplayground.info/rawdata/faircoin_prices.csv",
+        url: "https://api.fairplayground.info/rawdata/faircoin_prices.csv",
     }, processData);
 
 
@@ -29,6 +12,9 @@ $(function() {
         //   $(".inner-cont").append(priceData);
 
         if (priceData) {
+
+        	var heads = '<th>Official Rate</th><th>Official Value</th><th>Market Value</th>';
+    		$("thead tr").append(heads);
 
             $('tbody  > tr').each(function() {
 
@@ -81,6 +67,17 @@ $(function() {
         $(el).append('<td>€ ' + (Math.round(market * 100) / 100) + '</td>');
     }
 
+    function ajax (options, callback) {
+        var xhr;
+        xhr = new XMLHttpRequest();
+        xhr.open(options.type, options.url, options.async || true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                return callback(xhr.responseText);
+            }
+        };
+        return xhr.send();
+    };
 
     function csvToArray(csv) {
         var a1 = csv.split("\n");

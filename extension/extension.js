@@ -11,6 +11,9 @@ $(function() {
         //   $(".inner-cont").append("priceData: ");
         //   $(".inner-cont").append(priceData);
 
+          var heads = "<p style='text-align:center;'>If you're happy with the FairCoin Calculator, you can donate at <a href='faircoin:fMGcrP9nAFic4356F4oHDDWVq8YvtJSXZL'>fMGcrP9nAFic4356F4oHDDWVq8YvtJSXZL</a>";
+		$("body").append(heads);
+
         if (priceData) {
 
         	var heads = '<th>Official Rate</th><th>Official Value</th><th>Market Value</th>';

@@ -15,26 +15,50 @@ $(function() {
         //   $(".inner-cont").append("priceData: ");
         //   $(".inner-cont").append(priceData);
 
-          var heads = "<p style='text-align:center;'>If you're happy with the FairCoin Calculator, you can donate at <a href='faircoin:fMGcrP9nAFic4356F4oHDDWVq8YvtJSXZL'>fMGcrP9nAFic4356F4oHDDWVq8YvtJSXZL</a>";
+          var heads = "<p style='text-align:center; background:#fff'>If you're happy with the FairCoin Calculator, you can donate at <a href='faircoin:fMGcrP9nAFic4356F4oHDDWVq8YvtJSXZL'>fMGcrP9nAFic4356F4oHDDWVq8YvtJSXZL</a>";
 		$("body").append(heads);
 
         if (priceData) {
 
         	var heads = '<th>Official Rate</th><th>Official Value</th><th>Market Value</th>';
-    		$("thead tr").append(heads);
 
-            $('tbody').each(function() {
+        	if($("thead tr").length){ // faircoin 2
 
-            	total_fair = total_euro = total_market = 0;
+				$("thead tr").append(heads);
 
-				$(this).find('tr').each(function() {
+				$('tbody').each(function() {
 
+					total_fair = total_euro = total_market = 0;
 
-					var dateVar = $(this).find('td:first').text();
+					$(this).find('tr').each(function() {
+
+						var dateVar = $(this).find('td:first').text();
+						var d = new Date(dateVar);
+						var dateISO = d.toISOString().slice(0, 10);
+
+						var faircoins = parseFloat($(this).find('td:nth-child(3)').text());
+
+						// 		$(this).append('<td>'+faircoins+'</td>');
+
+						calculateEuros(dateISO, faircoins, this);
+
+					});
+
+					 $(this).append('<tr><td><strong>Totals</strong></td><td></td><td>' + (Math.round(total_fair * 100) / 100) + ' FAIR</td><td></td><td>€ ' + (Math.round(total_euro * 100) / 100) + '</td><td>€ ' + (Math.round(total_market * 100) / 100) + '</td></tr>');
+
+				});
+
+            } else { // faircoin 1
+
+				$("tbody tr:first-child").append(heads);
+
+				$('tbody tr.direct').each(function() {
+
+					var dateVar = $(this).find('td:nth-child(3)').text();
 					var d = new Date(dateVar);
 					var dateISO = d.toISOString().slice(0, 10);
 
-					var faircoins = parseFloat($(this).find('td:nth-child(3)').text());
+					var faircoins = cleanUpCurrency($(this).find('td:nth-child(4)').text());
 
 					// 		$(this).append('<td>'+faircoins+'</td>');
 
@@ -42,9 +66,8 @@ $(function() {
 
 				});
 
-				 $(this).append('<tr><td><strong>Totals</strong></td><td></td><td>' + (Math.round(total_fair * 100) / 100) + ' FAIR</td><td></td><td>€ ' + (Math.round(total_euro * 100) / 100) + '</td><td>€ ' + (Math.round(total_market * 100) / 100) + '</td></tr>');
+            }
 
-            });
         }
     };
 
@@ -106,6 +129,19 @@ $(function() {
         }
         return (r);
     }
+
+    function cleanUpCurrency(s){
+		var expression = /\(.(.+)\)/;
+
+		//Check if it is in the proper format
+		if(s.match(expression)){
+			//It matched - strip out parentheses and append - at front
+			return parseFloat('-' + s.replace(/[\$\(\),]/g,''));
+		}
+		else{
+			return parseFloat(s);
+		}
+	}
 
 
 });

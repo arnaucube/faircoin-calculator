@@ -6,13 +6,25 @@ var priceData = "";
 
 //get the dataset
 $(document).ready(function() {
+
     $.ajax({
         type: "GET",
-        url: "http://api.fairplayground.info/rawdata/faircoin_prices.csv",
+        url: "https://api.fairplayground.info/rawdata/faircoin_prices.csv",
         dataType: "text",
-        success: function(data) {processData(data);}
+        success: processData
      });
+
+
+     $('#inputFaircoin').on('input', calculateEuros);
+     $('#inputEuro').on('input', calculateFaircoins);
+
+     $('#inputDate').on('input', calculateEuros);
+
+     var strDate = new Date().toISOString().slice(0,10);
+     $('#inputDate').val(strDate);
+
 });
+
 function csvToArray(csv) {
   var a1 = csv.split("\n");
   var r = [];
@@ -22,6 +34,7 @@ function csvToArray(csv) {
   }
   return(r);
 }
+
 function processData(data) {
   priceData = csvToArray(data);
 };
@@ -53,9 +66,10 @@ function calculateEuros() {
 
   var euros = faircoins * selectedPriceData[3];
   document.getElementById("inputEuro").value= euros;
-  document.getElementById("result").innerHTML = faircoins + "FC, are " + euros + "€";
-  toastr.success(faircoins + "FC, are " + euros + "€");
+  document.getElementById("result").innerHTML = "The official rate was " + parseFloat(selectedPriceData[3]).toString() + " <p>" + faircoins + " FAIR were worth " + euros + " €";
+  toastr.success(faircoins + " FAIR were " + euros + " €");
 }
+
 function calculateFaircoins() {
   document.getElementById("result").innerHTML="";
   var euros = document.getElementById("inputEuro").value;
@@ -83,6 +97,6 @@ function calculateFaircoins() {
 
   var faircoins = euros / selectedPriceData[3];
   document.getElementById("inputFaircoin").value= faircoins;
-  document.getElementById("result").innerHTML = euros + "€, are " + faircoins + "FC";
-  toastr.success(euros + "€, are " + faircoins + "FC");
+  document.getElementById("result").innerHTML = "The official rate was " + parseFloat(selectedPriceData[3]).toString() + " <p>" + euros + " € were worth " + faircoins + " FAIR";
+  toastr.success(euros +  "€ were " + faircoins + " FAIR");
 }
